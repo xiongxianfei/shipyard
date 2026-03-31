@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cppcheck \
     # Utilities
     git curl wget vim python3 python3-pip \
+    # Required by vcpkg bootstrap-vcpkg.sh
+    zip unzip tar \
     # Common libraries
     libboost-all-dev \
     libssl-dev \
