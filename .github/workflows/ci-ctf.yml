@@ -40,7 +40,7 @@ jobs:
 
       - name: Smoke test
         run: |
-          docker run --rm dev-ctf:ci python3 -c "import pwn; print(pwn.__version__)"
+          docker run --rm dev-ctf:ci python3 -c "import pwnlib; print(pwnlib.__version__)"
           docker run --rm dev-ctf:ci r2 -v
           docker run --rm dev-ctf:ci ROPgadget --version
           docker run --rm dev-ctf:ci python3 -c "import capstone; print('capstone ok')"
