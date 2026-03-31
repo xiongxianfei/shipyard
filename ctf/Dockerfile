@@ -23,8 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev libffi-dev \
     # radare2
     radare2 \
-    # Misc useful utilities
-    xxd strings less \
+    # Misc useful utilities (strings is provided by binutils, already listed above)
+    xxd less \
     && rm -rf /var/lib/apt/lists/*
 
 # --- Python CTF libraries (venv to satisfy Ubuntu 24.04 PEP 668) ---
@@ -41,8 +41,8 @@ RUN pip install --upgrade pip && \
         pycryptodome \
         z3-solver
 
-# --- pwndbg ---
-RUN git clone --depth=1 --branch stable \
+# --- pwndbg (pin to a release tag — update periodically) ---
+RUN git clone --depth=1 --branch 2026.02.18 \
         https://github.com/pwndbg/pwndbg /opt/pwndbg && \
     cd /opt/pwndbg && ./setup.sh
 
