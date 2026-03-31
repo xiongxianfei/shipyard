@@ -1,0 +1,12 @@
+# Global owner — reviews all PRs by default
+* @xiongxianfei
+
+# Per-environment owners (override global for specific paths)
+/ctf/          @xiongxianfei
+/ai-coding/    @xiongxianfei
+/cpp/          @xiongxianfei
+/python/       @xiongxianfei
+/go/           @xiongxianfei
+
+# CI workflows — any change to workflows requires owner review
+/.github/      @xiongxianfei
