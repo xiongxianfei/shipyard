@@ -1,0 +1,50 @@
+name: CI — C++
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cpp/**'
+      - '.github/workflows/ci-cpp.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cpp/**'
+      - '.github/workflows/ci-cpp.yml'
+  schedule:
+    - cron: '0 3 * * 1'  # every Monday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and smoke-test C++ image
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cpp
+          push: false
+          load: true
+          tags: dev-cpp:ci
+          cache-from: type=gha,scope=cpp
+          cache-to:   type=gha,scope=cpp,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run --rm dev-cpp:ci gcc --version
+          docker run --rm dev-cpp:ci g++ --version
+          docker run --rm dev-cpp:ci clang --version
+          docker run --rm dev-cpp:ci cmake --version
+          docker run --rm dev-cpp:ci conan --version
+          docker run --rm dev-cpp:ci vcpkg version
+          docker run --rm dev-cpp:ci cppcheck --version
+          docker run --rm dev-cpp:ci valgrind --version

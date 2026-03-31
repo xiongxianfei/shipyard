@@ -1,0 +1,31 @@
+# Core scientific stack
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.5
+matplotlib>=3.9
+seaborn>=0.13
+
+# Deep learning — CPU wheels by default
+# For GPU: replace with:
+#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+torch>=2.4
+torchvision>=0.19
+torchaudio>=2.4
+
+# Hugging Face ecosystem
+transformers>=4.50
+datasets>=3.0
+tokenizers>=0.21
+accelerate>=0.34
+huggingface-hub>=0.25
+
+# Jupyter
+notebook>=7.2
+jupyterlab>=4.2
+ipywidgets>=8.1
+
+# Development utilities
+tqdm>=4.66
+requests>=2.32
+Pillow>=10.4
+scipy>=1.14

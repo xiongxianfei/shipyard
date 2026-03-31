@@ -1,0 +1,48 @@
+name: CI — CTF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ctf/**'
+      - '.github/workflows/ci-ctf.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ctf/**'
+      - '.github/workflows/ci-ctf.yml'
+  schedule:
+    - cron: '0 3 * * 1'  # every Monday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and smoke-test CTF image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./ctf
+          push: false
+          load: true
+          tags: dev-ctf:ci
+          cache-from: type=gha,scope=ctf
+          cache-to:   type=gha,scope=ctf,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run --rm dev-ctf:ci python3 -c "import pwn; print(pwn.__version__)"
+          docker run --rm dev-ctf:ci r2 -v
+          docker run --rm dev-ctf:ci ROPgadget --version
+          docker run --rm dev-ctf:ci python3 -c "import capstone; print('capstone ok')"
+          docker run --rm dev-ctf:ci python3 -c "import z3; print('z3 ok')"
+          docker run --rm dev-ctf:ci gdb --version

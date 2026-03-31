@@ -1,0 +1,43 @@
+# Runtime workspace directories (bind-mounted into containers, not tracked)
+ctf/workspace/
+ai-coding/workspace/
+cpp/workspace/
+python/workspace/
+go/workspace/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Go build artifacts
+*.exe
+*.test
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example

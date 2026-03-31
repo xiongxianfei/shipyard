@@ -1,0 +1,14 @@
+# Normalize line endings to LF on commit (important for Dockerfiles and shell scripts)
+* text=auto eol=lf
+
+# Force LF for files that must use LF (Docker, shell, YAML, TOML)
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+Makefile    text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.toml      text eol=lf
+*.md        text eol=lf
+*.txt       text eol=lf
+.gitignore  text eol=lf
+.gdbinit    text eol=lf

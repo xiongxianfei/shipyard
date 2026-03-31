@@ -1,0 +1,44 @@
+name: New Environment Request
+description: Propose a new Docker development environment
+labels: ["enhancement"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Environment name
+      description: Short name for the directory and image (e.g. `rust`, `java`, `web`)
+    validations:
+      required: true
+
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use case
+      description: What kind of development work would this environment support?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tools
+    attributes:
+      label: Key tools / packages
+      description: List the essential tools, compilers, or libraries that should be included.
+      placeholder: |
+        - rustup + cargo
+        - rust-analyzer (language server)
+        - clippy, rustfmt
+    validations:
+      required: true
+
+  - type: input
+    id: base-image
+    attributes:
+      label: Suggested base image
+      description: e.g. `rust:1.80-bookworm`, `eclipse-temurin:21-jdk-bookworm`
+      placeholder: rust:1.80-bookworm
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Are there existing images (Docker Hub, etc.) that already cover this? Why is a custom Dockerfile better?

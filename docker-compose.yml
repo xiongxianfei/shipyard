@@ -1,0 +1,85 @@
+services:
+
+  ctf:
+    build:
+      context: ./ctf
+      dockerfile: Dockerfile
+    image: dev-ctf:latest
+    container_name: dev-ctf
+    hostname: ctf-box
+    privileged: true
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    ulimits:
+      core: -1
+    volumes:
+      - ./ctf/workspace:/workspace
+    stdin_open: true
+    tty: true
+    # network_mode: host  # Linux only — enables host networking for exploit dev
+    #                       On Windows/macOS Docker Desktop this is silently ignored
+
+  ai-coding:
+    build:
+      context: ./ai-coding
+      dockerfile: Dockerfile
+    image: dev-ai:latest
+    container_name: dev-ai
+    volumes:
+      - ./ai-coding/workspace:/workspace
+    ports:
+      - "8888:8888"
+    stdin_open: true
+    tty: true
+    # Uncomment for GPU support (requires nvidia-container-toolkit on host):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  cpp:
+    build:
+      context: ./cpp
+      dockerfile: Dockerfile
+    image: dev-cpp:latest
+    container_name: dev-cpp
+    volumes:
+      - ./cpp/workspace:/workspace
+    stdin_open: true
+    tty: true
+
+  python:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    image: dev-python:latest
+    container_name: dev-python
+    volumes:
+      - ./python/workspace:/workspace
+    stdin_open: true
+    tty: true
+
+  go:
+    build:
+      context: ./go
+      dockerfile: Dockerfile
+    image: dev-go:latest
+    container_name: dev-go
+    volumes:
+      - ./go/workspace:/workspace
+      - go-mod-cache:/go/pkg/mod
+      - go-build-cache:/root/.cache/go-build
+    ports:
+      - "8080:8080"
+      - "2345:2345"
+    stdin_open: true
+    tty: true
+
+volumes:
+  go-mod-cache:
+  go-build-cache:

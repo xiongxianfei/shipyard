@@ -1,0 +1,62 @@
+name: Bug Report
+description: A Docker image fails to build or a tool is broken inside a container
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Which dev environment is affected?
+      options:
+        - ctf
+        - ai-coding
+        - cpp
+        - python
+        - go
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the problem. What did you expect vs. what actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `make build-ctf`
+        2. Run `make ctf`
+        3. Run `pwndbg` inside the container
+        4. See error ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Full error output
+      description: Paste the complete error output from `docker build` or `docker run`.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: docker-version
+    attributes:
+      label: Docker version
+      description: Output of `docker version --format '{{.Server.Version}}'`
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Host OS
+      description: e.g. Ubuntu 24.04, macOS 15.2, Windows 11
+    validations:
+      required: true
