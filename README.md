@@ -21,6 +21,21 @@ Creates Dockerfiles and orchestration to run isolated development environments f
 - **Python development** — Poetry, uv, linters, type checking
 - **Go development** — hot reload, debugger, linters
 
+## Pre-built images
+
+Images are published to GitHub Container Registry on every merge to `main`.
+No local build required:
+
+```bash
+docker pull ghcr.io/xiongxianfei/dev-ctf:latest
+docker pull ghcr.io/xiongxianfei/dev-ai:latest
+docker pull ghcr.io/xiongxianfei/dev-cpp:latest
+docker pull ghcr.io/xiongxianfei/dev-python:latest
+docker pull ghcr.io/xiongxianfei/dev-go:latest
+```
+
+Pin to a specific commit with the `sha-<commit>` tag (e.g. `ghcr.io/xiongxianfei/dev-go:sha-6488930`).
+
 ## Prerequisites
 
 - [Docker Engine](https://docs.docker.com/engine/install/) >= 24.0 with the Compose plugin (`docker compose`)
