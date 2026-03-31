@@ -41,8 +41,8 @@ RUN pip install --upgrade pip && \
         pycryptodome \
         z3-solver
 
-# --- pwndbg ---
-RUN git clone --depth=1 --branch stable \
+# --- pwndbg (pin to a release tag — update periodically) ---
+RUN git clone --depth=1 --branch 2026.02.18 \
         https://github.com/pwndbg/pwndbg /opt/pwndbg && \
     cd /opt/pwndbg && ./setup.sh
 
