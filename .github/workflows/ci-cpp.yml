@@ -15,6 +15,10 @@ on:
     - cron: '0 3 * * 1'  # every Monday 03:00 UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     name: Build and smoke-test C++ image
@@ -28,7 +32,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image (PR / schedule — load locally for smoke test)
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         uses: docker/build-push-action@v6
         with:
           context: ./cpp
@@ -39,6 +52,7 @@ jobs:
           cache-to:   type=gha,scope=cpp,mode=max
 
       - name: Smoke test
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: |
           docker run --rm dev-cpp:ci gcc --version
           docker run --rm dev-cpp:ci g++ --version
@@ -48,3 +62,15 @@ jobs:
           docker run --rm dev-cpp:ci vcpkg version
           docker run --rm dev-cpp:ci cppcheck --version
           docker run --rm dev-cpp:ci valgrind --version
+
+      - name: Build and push to GHCR (main branch only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cpp
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dev-cpp:latest
+            ghcr.io/${{ github.repository_owner }}/dev-cpp:sha-${{ github.sha }}
+          cache-from: type=gha,scope=cpp
+          cache-to:   type=gha,scope=cpp,mode=max
