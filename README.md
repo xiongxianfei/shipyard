@@ -155,3 +155,7 @@ Go module and build caches are persisted in named Docker volumes (`go-mod-cache`
 make stop    # stop running containers
 make clean   # remove containers, images, and volumes
 ```
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=xiongxianfei/shipyard&type=Date)](https://star-history.com/#xiongxianfei/shipyard&Date)
