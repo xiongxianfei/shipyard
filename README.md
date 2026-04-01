@@ -1,5 +1,6 @@
 # Shipyard
 
+[![CI — Binary Analysis](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-binary-analysis.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-binary-analysis.yml)
 [![CI — CTF](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-ctf.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-ctf.yml)
 [![CI — AI Coding](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-ai-coding.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-ai-coding.yml)
 [![CI — C++](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-cpp.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-cpp.yml)
@@ -16,6 +17,7 @@ Maintaining development environments across multiple devices is painful — conf
 Creates Dockerfiles and orchestration to run isolated development environments for:
 
 - **CTF** — binary exploitation, reverse engineering, network analysis
+- **Binary analysis** — static/dynamic analysis, reverse engineering, symbolic execution
 - **AI coding** — deep learning, NLP, Jupyter notebooks
 - **C++ development** — modern compilers, build systems, package managers
 - **Python development** — Poetry, uv, linters, type checking
@@ -32,6 +34,7 @@ docker pull ghcr.io/xiongxianfei/dev-ai:latest
 docker pull ghcr.io/xiongxianfei/dev-cpp:latest
 docker pull ghcr.io/xiongxianfei/dev-python:latest
 docker pull ghcr.io/xiongxianfei/dev-go:latest
+docker pull ghcr.io/xiongxianfei/dev-binary-analysis:latest
 ```
 
 Pin to a specific commit with the `sha-<commit>` tag (e.g. `ghcr.io/xiongxianfei/dev-go:sha-6488930`).
@@ -74,6 +77,38 @@ Your project files go in the `workspace/` subdirectory of each environment (e.g.
 ---
 
 ## Environments
+
+### Binary Analysis (`binary-analysis/`)
+
+**Base image:** `ubuntu:24.04`
+
+**Tools included:**
+- `gdb` + [pwndbg](https://github.com/pwndbg/pwndbg)
+- `radare2` + `r2pipe` (Python bindings)
+- `binutils` — `objdump`, `readelf`, `nm`, `strings`, `strip`, `size`
+- `nasm`, `yasm` — assemblers
+- `strace`, `ltrace`, `valgrind` — dynamic tracing and memory analysis
+- `qemu-user-static` — run cross-architecture binaries (ARM, MIPS, etc.)
+- `angr` — binary analysis platform (CFG recovery, symbolic execution)
+- `capstone`, `unicorn`, `keystone-engine` — disassembly, emulation, assembly
+- `lief`, `pyelftools`, `pefile` — ELF/PE/Mach-O parsers
+- `binwalk` — firmware and embedded binary analysis
+- `yara-python` — pattern matching and malware classification
+- `ROPgadget`, `ropper` — ROP chain discovery
+- `frida-tools` — dynamic instrumentation
+- `pwntools` — scripting utilities
+
+**Usage:**
+```bash
+make build-binary-analysis
+make binary-analysis
+```
+
+**Notes:**
+- Runs with `--privileged` and `SYS_PTRACE` (required for gdb and frida).
+- Place target binaries in `binary-analysis/workspace/` — mounted at `/workspace` inside the container.
+
+---
 
 ### CTF (`ctf/`)
 

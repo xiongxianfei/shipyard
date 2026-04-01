@@ -80,6 +80,25 @@ services:
     stdin_open: true
     tty: true
 
+  binary-analysis:
+    build:
+      context: ./binary-analysis
+      dockerfile: Dockerfile
+    image: dev-binary-analysis:latest
+    container_name: dev-binary-analysis
+    hostname: binary-analysis-box
+    privileged: true
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    ulimits:
+      core: -1
+    volumes:
+      - ./binary-analysis/workspace:/workspace
+    stdin_open: true
+    tty: true
+
 volumes:
   go-mod-cache:
   go-build-cache:
