@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-bookworm
+FROM eclipse-temurin:21-jdk
 
 ENV DEBIAN_FRONTEND=noninteractive \
     MAVEN_VERSION=3.9.9 \
