@@ -6,6 +6,8 @@
 [![CI — C++](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-cpp.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-cpp.yml)
 [![CI — Python](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-python.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-python.yml)
 [![CI — Go](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-go.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-go.yml)
+[![CI — Java](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-java.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-java.yml)
+[![CI — Rust](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-rust.yml/badge.svg)](https://github.com/xiongxianfei/shipyard/actions/workflows/ci-rust.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Why this project
@@ -22,6 +24,8 @@ Creates Dockerfiles and orchestration to run isolated development environments f
 - **C++ development** — modern compilers, build systems, package managers
 - **Python development** — Poetry, uv, linters, type checking
 - **Go development** — hot reload, debugger, linters
+- **Java development** — JDK 21, Maven, Gradle
+- **Rust development** — rustup, cargo, clippy, cargo-watch, cargo-audit
 
 ## Pre-built images
 
@@ -30,11 +34,13 @@ No local build required:
 
 ```bash
 docker pull ghcr.io/xiongxianfei/dev-ctf:latest
+docker pull ghcr.io/xiongxianfei/dev-binary-analysis:latest
 docker pull ghcr.io/xiongxianfei/dev-ai:latest
 docker pull ghcr.io/xiongxianfei/dev-cpp:latest
 docker pull ghcr.io/xiongxianfei/dev-python:latest
 docker pull ghcr.io/xiongxianfei/dev-go:latest
-docker pull ghcr.io/xiongxianfei/dev-binary-analysis:latest
+docker pull ghcr.io/xiongxianfei/dev-java:latest
+docker pull ghcr.io/xiongxianfei/dev-rust:latest
 ```
 
 Pin to a specific commit with the `sha-<commit>` tag (e.g. `ghcr.io/xiongxianfei/dev-go:sha-6488930`).
@@ -53,9 +59,12 @@ make build
 
 # Enter an environment shell
 make ctf
+make binary-analysis
 make cpp
 make python
 make go
+make java
+make rust
 
 # Start Jupyter (AI coding) at http://localhost:8888
 make ai
@@ -205,6 +214,59 @@ Go module and build caches are persisted in named Docker volumes (`go-mod-cache`
 make stop    # stop running containers
 make clean   # remove containers, images, and volumes
 ```
+
+### Java Development (`java/`)
+
+**Base image:** `eclipse-temurin:21-jdk-bookworm`
+
+**Tools included:**
+- JDK 21 (LTS) — `java`, `javac`, `jshell`, `jar`
+- [Maven](https://maven.apache.org/) 3.9.9
+- [Gradle](https://gradle.org/) 8.12.1
+
+Maven local repo and Gradle cache are persisted in named Docker volumes across sessions.
+
+→ [Detailed guide](docs/java.md)
+
+---
+
+### Rust Development (`rust/`)
+
+**Base image:** `rust:1-bookworm`
+
+**Tools included:**
+- `rustc`, `cargo`, `rustup` (stable channel)
+- `clippy` — linter
+- `rustfmt` — formatter
+- `rust-analyzer` — language server
+- `cargo-watch` — hot reload
+- `cargo-edit` — `cargo add` / `cargo rm` / `cargo upgrade`
+- `cargo-audit` — CVE scanner for dependencies
+- `cargo-nextest` — faster test runner
+
+Cargo registry and git caches are persisted in named Docker volumes.
+
+→ [Detailed guide](docs/rust.md)
+
+---
+
+## Documentation
+
+Detailed workflow guides for each environment are in the [`docs/`](docs/) folder:
+
+| Guide | Contents |
+|-------|----------|
+| [Getting Started](docs/getting-started.md) | Pull images, first build, workspace setup |
+| [CTF](docs/ctf.md) | pwntools, ROP, gdb/pwndbg, crypto |
+| [Binary Analysis](docs/binary-analysis.md) | radare2, angr, gdb, frida, YARA |
+| [AI Coding](docs/ai-coding.md) | PyTorch, Hugging Face, Jupyter, GPU setup |
+| [C++](docs/cpp.md) | CMake, Conan, vcpkg, sanitizers |
+| [Python](docs/python.md) | Poetry, uv, ruff, pytest |
+| [Go](docs/go.md) | Air, Delve, golangci-lint |
+| [Java](docs/java.md) | Maven, Gradle, Spring Boot |
+| [Rust](docs/rust.md) | cargo, clippy, cargo-watch, cross-compilation |
+
+---
 
 ## Star History
 
