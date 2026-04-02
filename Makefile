@@ -1,5 +1,5 @@
-.PHONY: build build-ctf build-ai build-cpp build-python build-go \
-        ctf ai cpp python go \
+.PHONY: build build-ctf build-ai build-cpp build-python build-go build-binary-analysis \
+        ctf ai cpp python go binary-analysis \
         stop clean help
 
 ## build: Build all development environment images
@@ -26,6 +26,10 @@ build-python:
 build-go:
 	docker compose build go
 
+## build-binary-analysis: Build the binary analysis image only
+build-binary-analysis:
+	docker compose build binary-analysis
+
 ## ctf: Enter the CTF environment shell
 ctf:
 	docker compose run --rm ctf
@@ -45,6 +49,10 @@ python:
 ## go: Enter the Go development environment shell
 go:
 	docker compose run --rm go
+
+## binary-analysis: Enter the binary analysis environment shell
+binary-analysis:
+	docker compose run --rm binary-analysis
 
 ## stop: Stop all running containers
 stop:
