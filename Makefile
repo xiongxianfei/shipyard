@@ -1,5 +1,5 @@
-.PHONY: build build-ctf build-ai build-cpp build-python build-go build-binary-analysis \
-        ctf ai cpp python go binary-analysis \
+.PHONY: build build-ctf build-ai build-cpp build-python build-go build-binary-analysis build-java build-rust \
+        ctf ai cpp python go binary-analysis java rust \
         stop clean help
 
 ## build: Build all development environment images
@@ -30,6 +30,14 @@ build-go:
 build-binary-analysis:
 	docker compose build binary-analysis
 
+## build-java: Build the Java image only
+build-java:
+	docker compose build java
+
+## build-rust: Build the Rust image only
+build-rust:
+	docker compose build rust
+
 ## ctf: Enter the CTF environment shell
 ctf:
 	docker compose run --rm ctf
@@ -53,6 +61,14 @@ go:
 ## binary-analysis: Enter the binary analysis environment shell
 binary-analysis:
 	docker compose run --rm binary-analysis
+
+## java: Enter the Java development environment shell
+java:
+	docker compose run --rm java
+
+## rust: Enter the Rust development environment shell
+rust:
+	docker compose run --rm rust
 
 ## stop: Stop all running containers
 stop:

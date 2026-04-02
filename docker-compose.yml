@@ -99,6 +99,38 @@ services:
     stdin_open: true
     tty: true
 
+  java:
+    build:
+      context: ./java
+      dockerfile: Dockerfile
+    image: dev-java:latest
+    container_name: dev-java
+    volumes:
+      - ./java/workspace:/workspace
+      - maven-repo:/root/.m2
+      - gradle-cache:/root/.gradle
+    ports:
+      - "8090:8080"
+    stdin_open: true
+    tty: true
+
+  rust:
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
+    image: dev-rust:latest
+    container_name: dev-rust
+    volumes:
+      - ./rust/workspace:/workspace
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+    stdin_open: true
+    tty: true
+
 volumes:
   go-mod-cache:
   go-build-cache:
+  maven-repo:
+  gradle-cache:
+  cargo-registry:
+  cargo-git:
